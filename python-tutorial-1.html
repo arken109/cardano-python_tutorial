@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 基础教学</title>
+    <style>
+        :root {
+            --primary-color: #3776ab;
+            --secondary-color: #ffd43b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #2c5f8a);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .python-logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 20px 0;
+        }
+        
+        .sidebar-title {
+            padding: 0 20px 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-list {
+            list-style: none;
+        }
+        
+        .chapter-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .chapter-item:hover {
+            background-color: #e9ecef;
+        }
+        
+        .chapter-item.active {
+            background-color: #e7f3ff;
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .chapter {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .chapter.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #2c5f8a;
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid var(--warning-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .success-box {
+            background-color: #d4edda;
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .example-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .example-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .exercise-box {
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .exercise-title {
+            font-weight: 600;
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+        
+        .tip {
+            display: flex;
+            align-items: flex-start;
+            margin: 10px 0;
+        }
+        
+        .tip-icon {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .output {
+            background-color: #f1f3f4;
+            border-left: 3px solid #5f6368;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .try-it {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            margin: 10px 0;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .try-it:hover {
+            background-color: #2c5f8a;
+        }
+        
+        .concept-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .concept-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .syntax-example {
+            background: #2d3748;
+            color: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .comparison-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .step-by-step {
+            margin: 20px 0;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .hint-box {
+            background-color: #fff8e1;
+            border: 1px dashed #ffb300;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .hint-title {
+            font-weight: 600;
+            color: #e65100;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hint-title::before {
+            content: "💡";
+            margin-right: 8px;
+        }
+        
+        .implementation-guide {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .implementation-title {
+            font-weight: 600;
+            color: var(--success-color);
+            margin-bottom: 10px;
+        }
+        
+        .project-structure {
+            background-color: #f3e5f5;
+            border: 1px solid #ba68c8;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .project-structure-title {
+            font-weight: 600;
+            color: #7b1fa2;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .chapter-list {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .chapter-item {
+                white-space: nowrap;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            
+            .chapter-item.active {
+                border-left: none;
+                border-bottom-color: var(--primary-color);
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="python-logo">🐍</div>
+            <h1>Python 基础教学</h1>
+            <p class="subtitle">从零开始学习 Python 编程语言</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-title">课程章节</div>
+                <ul class="chapter-list">
+                    <li class="chapter-item active" data-chapter="1">1. Python 简介</li>
+                    <li class="chapter-item" data-chapter="2">2. 安装与环境配置</li>
+                    <li class="chapter-item" data-chapter="3">3. 变量与数据类型</li>
+                    <li class="chapter-item" data-chapter="4">4. 运算符与表达式</li>
+                    <li class="chapter-item" data-chapter="5">5. 控制流程</li>
+                    <li class="chapter-item" data-chapter="6">6. 函数</li>
+                    <li class="chapter-item" data-chapter="7">7. 数据结构</li>
+                    <li class="chapter-item" data-chapter="8">8. 文件操作</li>
+                    <li class="chapter-item" data-chapter="9">9. 错误处理</li>
+                    <li class="chapter-item" data-chapter="10">10. 实战项目</li>
+                </ul>
+            </div>
+            
+            <div class="content-area">
+                <!-- 第1章：Python简介 -->
+                <div class="chapter active" id="chapter1">
+                    <h2>1. Python 简介</h2>
+                    <p>Python 是一种高级、解释型的编程语言，以其简洁的语法和强大的功能而闻名。它由 Guido van Rossum 于1991年创建，现在已成为世界上最受欢迎的编程语言之一。</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">Python 的主要特点</div>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <strong>简单易学</strong>
+                                <p>语法清晰直观，适合编程初学者入门</p>
+                            </div>
+                            <div class="feature-item">
+                                <strong>免费开源</strong>
+                                <p>可以自由使用、修改和分发</p>
+                            </div>
+                            <div class="feature-item">
+                                <strong>跨平台</strong>
+                                <p>可在 Windows、Mac、Linux 等各种操作系统上运行</p>
+                            </div>
+                            <div class="feature-item">
+                                <strong>丰富的库</strong>
+                                <p>拥有庞大的标准库和第三方库生态系统</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="example-box">
+                        <div class="example-title">第一个 Python 程序</div>
+                        <p>在 Python 中，打印 "Hello, World!" 非常简单：</p>
+                        <div class="syntax-example">print("Hello, World!")</div>
+                        <p>这行代码会在屏幕上显示 "Hello, World!" 文字。</p>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p><strong>重要提示：</strong> Python 使用缩进来表示代码块，而不是像其他语言那样使用大括号。正确的缩进对于 Python 程序至关重要。</p>
+                    </div>
+                </div>
+                
+                <!-- 第2章：安装与环境配置 -->
+                <div class="chapter" id="chapter2">
+                    <h2>2. 安装与环境配置</h2>
+                    <p>在开始编写 Python 程序之前，需要先安装 Python 解释器。</p>
+                    
+                    <div class="step-by-step">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>下载 Python</h3>
+                                <p>访问 Python 官方网站 <a href="https://python.org/download/" target="_blank">python.org<a>，进入下载页面选择适合你操作系统的版本。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>运行安装程序</h3>
+                                <p>双击下载的安装文件，在安装过程中务必勾选 "Add Python to PATH" 选项，这样可以从任何位置运行 Python。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>验证安装</h3>
+                                <p>打开命令提示符或终端，输入以下命令检查安装是否成功：</p>
+                                <div class="syntax-example">python --version</div>
+                                <p>如果显示 Python 版本号，说明安装成功。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">选择开发环境</div>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <strong>IDLE</strong>
+                                <p>Python 自带的简易开发环境，适合初学者</p>
+                            </div>
+                            <div class="feature-item">
+                                <strong>VS Code</strong>
+                                <p>轻量级且功能强大的代码编辑器，有丰富的扩展</p>
+                            </div>
+                            <div class="feature-item">
+                                <strong>PyCharm</strong>
+                                <p>专业的 Python IDE，提供完整开发功能</p>
+                            </div>
+                            <div class="feature-item">
+                                <strong>Jupyter Notebook</strong>
+                                <p>适合数据分析和交互式学习的环境</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <p><strong>注意：</strong> 在 Windows 系统上安装时，一定要勾选 "Add Python to PATH" 选项，否则需要在命令提示符中输入完整路径才能运行 Python。</p>
+                    </div>
+                </div>
+                
+                <!-- 第3章：变量与数据类型 -->
+                <div class="chapter" id="chapter3">
+                    <h2>3. 变量与数据类型</h2>
+                    <p>在 Python 中，变量是用来存储数据的容器。与其他编程语言不同，Python 中的变量不需要声明类型，可以直接赋值。</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">基本数据类型</div>
+                        
+                        <h3>整数 (int)</h3>
+                        <p>整数是没有小数部分的数字，可以是正数、负数或零。</p>
+                        <div class="syntax-example">age = 25
+temperature = -10
+count = 0</div>
+                        
+                        <h3>浮点数 (float)</h3>
+                        <p>浮点数是带有小数点的数字。</p>
+                        <div class="syntax-example">height = 1.75
+weight = 68.5
+pi = 3.14159</div>
+                        
+                        <h3>字符串 (str)</h3>
+                        <p>字符串是由字符组成的文本，可以用单引号或双引号包围。</p>
+                        <div class="syntax-example">name = "张三"
+message = 'Hello, World!'
+address = "北京市朝阳区"</div>
+                        
+                        <h3>布尔值 (bool)</h3>
+                        <p>布尔值只有两个：True 和 False，用于表示真或假。</p>
+                        <div class="syntax-example">is_student = True
+is_raining = False
+has_license = True</div>
+                    </div>
+                    
+                    <div class="example-box">
+                        <div class="example-title">变量命名规则</div>
+                        <ul>
+                            <li>变量名只能包含字母、数字和下划线</li>
+                            <li>变量名不能以数字开头</li>
+                            <li>变量名不能是 Python 的关键字（如 if、for、while 等）</li>
+                            <li>变量名区分大小写</li>
+                            <li>建议使用有意义的名称，如 user_name 而不是 un</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="exercise-box">
+                        <div class="exercise-title">练习</div>
+                        <p>创建以下变量并思考它们应该使用什么数据类型：</p>
+                        <ul>
+                            <li>存储你的年龄</li>
+                            <li>存储你的姓名</li>
+                            <li>存储你是否喜欢编程</li>
+                            <li>存储你的身高（米）</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 第4章：运算符与表达式 -->
+                <div class="chapter" id="chapter4">
+                    <h2>4. 运算符与表达式</h2>
+                    <p>运算符是用于执行各种计算和操作的符号。Python 支持多种类型的运算符。</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">算术运算符</div>
+                        <p>用于执行基本的数学运算：</p>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>运算符</th>
+                                <th>描述</th>
+                                <th>示例</th>
+                                <th>结果</th>
+                            </tr>
+                            <tr>
+                                <td>+</td>
+                                <td>加法</td>
+                                <td>5 + 3</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>减法</td>
+                                <td>10 - 4</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>*</td>
+                                <td>乘法</td>
+                                <td>3 * 7</td>
+                                <td>21</td>
+                            </tr>
+                            <tr>
+                                <td>/</td>
+                                <td>除法</td>
+                                <td>15 / 3</td>
+                                <td>5.0</td>
+                            </tr>
+                            <tr>
+                                <td>//</td>
+                                <td>整除</td>
+                                <td>17 // 3</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>%</td>
+                                <td>取余</td>
+                                <td>17 % 3</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>**</td>
+                                <td>幂运算</td>
+                                <td>2 ** 3</td>
+                                <td>8</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">比较运算符</div>
+                        <p>用于比较两个值，返回 True 或 False：</p>
+                        <div class="syntax-example"># 等于：==
+# 不等于：!=
+# 大于：>
+# 小于：<
+# 大于等于：>=
+# 小于等于：<=</div>
+                        <p>示例：5 == 5 返回 True，5 > 10 返回 False</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">逻辑运算符</div>
+                        <p>用于组合多个条件：</p>
+                        <div class="syntax-example"># 与：and (两个条件都为真时返回真)
+# 或：or (至少一个条件为真时返回真)
+# 非：not (反转条件的真假值)</div>
+                        <p>示例：True and False 返回 False，True or False 返回 True，not True 返回 False</p>
+                    </div>
+                </div>
+                
+                <!-- 第5章：控制流程 -->
+                <div class="chapter" id="chapter5">
+                    <h2>5. 控制流程</h2>
+                    <p>控制流程语句用于控制程序的执行顺序，让程序能够根据条件做出决策或重复执行某些操作。</p>
+					<p>您可以打开<a href="https://www.programiz.com/python-programming/online-compiler/" target="_blank">Programiz</a>亲自操作</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">条件语句 (if-elif-else)</div>
+                        <p>根据条件决定执行哪部分代码：</p>
+                        <div class="syntax-example">if 条件1:
+    # 条件1为真时执行的代码
+elif 条件2:
+    # 条件2为真时执行的代码
+else:
+    # 所有条件都不满足时执行的代码</div>
+                        <p>示例：根据分数判断等级</p>
+                        <div class="syntax-example">score = 85
+
+if score >= 90:
+    print("优秀")
+elif score >= 80:
+    print("良好")
+elif score >= 60:
+    print("及格")
+else:
+    print("不及格")</div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">循环语句</div>
+                        
+                        <h3>for 循环</h3>
+                        <p>用于遍历序列（如列表、字符串等）中的每个元素：</p>
+                        <div class="syntax-example">for i in range(5):
+    print(i)</div>
+                        <p>这会打印数字 0 到 4</p>
+                        
+                        <h3>while 循环</h3>
+                        <p>在条件为真时重复执行代码块：</p>
+                        <div class="syntax-example">count = 0
+while count < 3:
+    print(f"计数: {count}")
+    count += 1</div>
+                        <p>这会打印：计数: 0 计数: 1 计数: 2</p>
+                    </div>
+                    
+                    <div class="exercise-box">
+                        <div class="exercise-title">练习</div>
+                        <p>编写一个程序，实现以下功能：</p>
+                        <ol>
+                            <li>计算 1 到 100 之间所有偶数的和</li>
+                            <li>让用户输入一个数字，判断它是正数、负数还是零</li>
+                            <li>打印九九乘法表的前5行</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- 第6章：函数 -->
+                <div class="chapter" id="chapter6">
+                    <h2>6. 函数</h2>
+                    <p>函数是一段可重复使用的代码块，用于执行特定任务。使用函数可以使代码更加模块化、易于维护。</p>
+					<p>您可以打开<a href="https://www.programiz.com/python-programming/online-compiler/" target="_blank">Programiz</a>亲自操作</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">定义和调用函数</div>
+                        <p>使用 def 关键字定义函数，然后通过函数名调用：</p>
+                        <div class="syntax-example"># 定义函数
+def greet(name):
+    return f"Hello, {name}!"
+
+# 调用函数
+message = greet("Alice")
+print(message)  # 输出: Hello, Alice!</div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">带默认参数的函数</div>
+                        <p>可以为函数参数指定默认值：</p>
+                        <div class="syntax-example">def introduce(name, age=18):
+    print(f"我叫{name}，今年{age}岁")
+
+introduce("张三")        # 使用默认年龄：我叫张三，今年18岁
+introduce("李四", 25)   # 指定年龄：我叫李四，今年25岁</div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">Lambda 函数</div>
+                        <p>Lambda 函数是一种简单的匿名函数，适合简单的操作：</p>
+                        <div class="syntax-example"># 定义lambda函数计算平方
+square = lambda x: x * x
+print(square(5))  # 输出: 25</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p><strong>函数的好处：</strong> 代码重用、提高可读性、便于调试、模块化开发。</p>
+                    </div>
+                </div>
+                
+                <!-- 第7章：数据结构 -->
+                <div class="chapter" id="chapter7">
+                    <h2>7. 数据结构</h2>
+                    <p>Python 提供了多种内置的数据结构来存储和组织数据，每种数据结构都有其特定的用途和优势。</p>
+					<p>您可以打开<a href="https://www.programiz.com/python-programming/online-compiler/" target="_blank">Programiz</a>亲自操作</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">列表 (List)</div>
+                        <p>列表是有序的可变序列，可以存储不同类型的元素：</p>
+                        <div class="syntax-example"># 创建列表
+fruits = ["apple", "banana", "cherry"]
+
+# 访问元素
+print(fruits[0])  # 输出: apple
+
+# 添加元素
+fruits.append("orange")
+
+# 遍历列表
+for fruit in fruits:
+    print(fruit)</div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">字典 (Dictionary)</div>
+                        <p>字典是键值对的集合，通过键来访问值：</p>
+                        <div class="syntax-example"># 创建字典
+person = {
+    "name": "张三",
+    "age": 25,
+    "city": "北京"
+}
+
+# 访问值
+print(person["name"])  # 输出: 张三
+
+# 添加新键值对
+person["job"] = "工程师"
+
+# 遍历字典
+for key, value in person.items():
+    print(f"{key}: {value}")</div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">元组和集合</div>
+                        
+                        <h3>元组 (Tuple)</h3>
+                        <p>元组是不可变的序列，创建后不能修改：</p>
+                        <div class="syntax-example">coordinates = (10, 20)
+print(coordinates[0])  # 输出: 10</div>
+                        
+                        <h3>集合 (Set)</h3>
+                        <p>集合是无序的不重复元素集合：</p>
+                        <div class="syntax-example">numbers = {1, 2, 3, 2, 1}
+print(numbers)  # 输出: {1, 2, 3}</div>
+                    </div>
+                </div>
+                
+                <!-- 第8章：文件操作 -->
+                <div class="chapter" id="chapter8">
+                    <h2>8. 文件操作</h2>
+                    <p>Python 可以轻松地读取和写入文件，这是处理数据的重要技能。</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">读取文件</div>
+                        <p>使用 open() 函数和 with 语句安全地读取文件：</p>
+						<p>示例中，读取的文件需要跟python文件(.py)在同一文件夾下</p>
+                        <div class="syntax-example"># 读取整个文件
+with open("example.txt", "r", encoding="utf-8") as file:
+    content = file.read()
+    print(content)
+
+# 逐行读取
+with open("example.txt", "r", encoding="utf-8") as file:
+    for line in file:
+        print(line.strip())  # strip() 移除行尾的换行符</div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">写入文件</div>
+                        <p>使用写入模式创建或覆盖文件：</p>
+                        <div class="syntax-example"># 写入文件
+with open("output.txt", "w", encoding="utf-8") as file:
+    file.write("Hello, World!\n")
+    file.write("这是第二行\n")
+
+# 追加到文件
+with open("output.txt", "a", encoding="utf-8") as file:
+    file.write("这是追加的内容\n")</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p><strong>文件模式说明：</strong></p>
+                        <ul>
+                            <li>"r" - 读取模式（默认）</li>
+                            <li>"w" - 写入模式（覆盖现有内容）</li>
+                            <li>"a" - 追加模式（在文件末尾添加内容）</li>
+                            <li>"r+" - 读写模式</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 第9章：错误处理 -->
+                <div class="chapter" id="chapter9">
+                    <h2>9. 错误处理</h2>
+                    <p>在程序执行过程中可能会发生错误，使用 try-except 块可以优雅地处理这些错误，防止程序崩溃。</p>
+					<p>您可以打开<a href="https://www.programiz.com/python-programming/online-compiler/" target="_blank">Programiz</a>亲自操作</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">基本错误处理</div>
+                        <p>捕获特定类型的错误并采取相应措施：</p>
+                        <div class="syntax-example">try:
+    number = int(input("请输入一个数字: "))
+    result = 10 / number
+    print(f"结果是: {result}")
+except ValueError:
+    print("错误：请输入有效的数字！")
+except ZeroDivisionError:
+    print("错误：不能除以零！")
+except Exception as e:
+    print(f"发生未知错误: {e}")</div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">finally 子句</div>
+                        <p>finally 块中的代码无论是否发生错误都会执行：</p>
+                        <div class="syntax-example">try:
+    file = open("data.txt", "r")
+    content = file.read()
+    print(content)
+except FileNotFoundError:
+    print("文件不存在")
+finally:
+    # 无论是否发生错误都会执行
+    if 'file' in locals():
+        file.close()
+    print("程序执行完毕")</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p><strong>常见的错误类型：</strong></p>
+                        <ul>
+                            <li>SyntaxError - 语法错误</li>
+                            <li>NameError - 未定义变量</li>
+                            <li>TypeError - 类型错误</li>
+                            <li>ValueError - 值错误</li>
+                            <li>IndexError - 索引错误</li>
+                            <li>KeyError - 键错误（字典）</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 第10章：实战项目 -->
+                <div class="chapter" id="chapter10">
+                    <h2>10. 实战项目 - 简易待办事项管理器</h2>
+                    <p>现在让我们应用所学知识来创建一个完整的项目 - 简易待办事项管理器。这个项目将综合运用我们学到的所有Python知识。</p>
+                    
+                    <div class="concept-card">
+                        <div class="concept-title">项目功能</div>
+                        <p>这个待办事项管理器将实现以下功能：</p>
+                        <ul>
+                            <li>查看所有待办事项</li>
+                            <li>添加新的待办事项</li>
+                            <li>删除指定的待办事项</li>
+                            <li>标记待办事项为已完成</li>
+                            <li>退出程序</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="project-structure">
+                        <div class="project-structure-title">项目结构建议</div>
+                        <p>建议将项目分为以下几个部分：</p>
+                        <div class="syntax-example"># 主程序入口
+def main():
+    # 初始化待办事项列表
+    # 显示菜单
+    # 根据用户选择执行相应操作
+
+# 显示所有待办事项
+def show_todos(todos):
+    # 显示所有待办事项，包括序号和状态
+
+# 添加待办事项
+def add_todo(todos):
+    # 获取用户输入的待办事项
+    # 添加到待办事项列表
+
+# 删除待办事项
+def delete_todo(todos):
+    # 显示待办事项列表
+    # 获取用户要删除的序号
+    # 从列表中删除指定待办事项
+
+# 标记待办事项为已完成
+def mark_completed(todos):
+    # 显示待办事项列表
+    # 获取用户要标记的序号
+    # 更新待办事项状态
+
+# 程序入口点
+if __name__ == "__main__":
+    main()</div>
+                    </div>
+                    
+                    <div class="implementation-guide">
+                        <div class="implementation-title">实现指导</div>
+                        
+                        <h3>1. 数据结构设计</h3>
+                        <p>考虑使用字典来存储每个待办事项的详细信息：</p>
+                        <div class="syntax-example"># 每个待办事项可以是一个字典
+todo_item = {
+    "id": 1,           # 唯一标识
+    "task": "学习Python", # 任务内容
+    "completed": False  # 完成状态
+}
+
+# 所有待办事项存储在一个列表中
+todos = []</div>
+                        
+                        <h3>2. 主循环设计</h3>
+                        <p>使用 while 循环创建程序主菜单：</p>
+                        <div class="syntax-example">def main():
+    todos = []  # 初始化空列表
+    
+    while True:
+        print("\n=== 简易待办事项管理器 ===")
+        print("1. 查看所有待办事项")
+        print("2. 添加待办事项")
+        print("3. 删除待办事项")
+        print("4. 标记待办事项为已完成")
+        print("5. 退出程序")
+        
+        choice = input("请选择操作 (1-5): ")
+        
+        if choice == "1":
+            show_todos(todos)
+        elif choice == "2":
+            add_todo(todos)
+        elif choice == "3":
+            delete_todo(todos)
+        elif choice == "4":
+            mark_completed(todos)
+        elif choice == "5":
+            print("感谢使用待办事项管理器，再见！")
+            break
+        else:
+            print("无效选择，请重新输入！")</div>
+                    </div>
+                    
+                    <div class="hint-box">
+                        <div class="hint-title">实现提示与技巧</div>
+                        
+                        <h3>提示 1: 显示待办事项</h3>
+                        <p>在显示待办事项时，可以使用枚举函数来获取序号：</p>
+                        <div class="syntax-example">def show_todos(todos):
+    if not todos:
+        print("暂无待办事项！")
+        return
+    
+    print("\n=== 待办事项列表 ===")
+    for i, todo in enumerate(todos, 1):
+        status = "✓" if todo["completed"] else "○"
+        print(f"{i}. [{status}] {todo['task']}")</div>
+                        
+                        <h3>提示 2: 添加待办事项</h3>
+                        <p>添加待办事项时，可以自动生成ID：</p>
+                        <div class="syntax-example">def add_todo(todos):
+    task = input("请输入待办事项: ").strip()
+    if task:
+        # 生成新ID（当前最大ID+1，如果没有则为1）
+        new_id = max([todo["id"] for todo in todos], default=0) + 1
+        todos.append({
+            "id": new_id,
+            "task": task,
+            "completed": False
+        })
+        print("待办事项添加成功！")
+    else:
+        print("待办事项不能为空！")</div>
+                        
+                        <h3>提示 3: 删除待办事项</h3>
+                        <p>删除时添加错误处理，防止用户输入无效序号：</p>
+                        <div class="syntax-example">def delete_todo(todos):
+    if not todos:
+        print("暂无待办事项可删除！")
+        return
+    
+    show_todos(todos)
+    try:
+        index = int(input("请输入要删除的待办事项序号: ")) - 1
+        if 0 <= index < len(todos):
+            removed = todos.pop(index)
+            print(f"已删除: {removed['task']}")
+        else:
+            print("无效的序号！")
+    except ValueError:
+        print("请输入有效的数字！")</div>
+                        
+                        <h3>提示 4: 标记完成状态</h3>
+                        <p>标记完成状态时，可以切换完成状态：</p>
+                        <div class="syntax-example">def mark_completed(todos):
+    if not todos:
+        print("暂无待办事项！")
+        return
+    
+    show_todos(todos)
+    try:
+        index = int(input("请输入要标记为已完成/未完成的待办事项序号: ")) - 1
+        if 0 <= index < len(todos):
+            todos[index]["completed"] = not todos[index]["completed"]
+            status = "已完成" if todos[index]["completed"] else "未完成"
+            print(f"已将 '{todos[index]['task']}' 标记为 {status}")
+        else:
+            print("无效的序号！")
+    except ValueError:
+        print("请输入有效的数字！")</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p><strong>扩展功能建议：</strong></p>
+                        <ul>
+                            <li>添加保存到文件功能，使用第8章的文件操作知识</li>
+                            <li>添加按状态筛选功能（只显示未完成/已完成事项）</li>
+                            <li>添加编辑待办事项功能</li>
+                            <li>添加优先级设置功能</li>
+                            <li>添加截止日期功能</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="exercise-box">
+                        <div class="exercise-title">挑战任务</div>
+                        <p>尝试为待办事项管理器添加以下高级功能：</p>
+                        <ol>
+                            <li><strong>数据持久化</strong>：使用文件操作将待办事项保存到文件中，程序启动时自动加载</li>
+                            <li><strong>分类功能</strong>：允许用户为待办事项添加分类标签（如工作、学习、生活）</li>
+                            <li><strong>搜索功能</strong>：允许用户根据关键词搜索待办事项</li>
+                            <li><strong>统计功能</strong>：显示已完成和未完成事项的数量统计</li>
+                        </ol>
+                        <p>每个挑战任务都会帮助你巩固不同的Python知识点！</p>
+                    </div>
+                    
+                    <div class="step-by-step">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>基础版本实现</h3>
+                                <p>首先实现基本功能：查看、添加、删除和标记完成状态。确保程序能够正常运行。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>添加错误处理</h3>
+                                <p>使用 try-except 语句处理用户输入错误，使程序更加健壮。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>优化用户体验</h3>
+                                <p>改进界面显示，添加更多提示信息，使程序更加友好。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>添加扩展功能</h3>
+                                <p>选择一个或多个挑战任务，为程序添加更多实用功能。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="success-box">
+                        <p><strong>恭喜！</strong> 你已经完成了 Python 基础教学的所有内容。通过这个待办事项管理器项目，你可以巩固所学的知识，并为更复杂的项目打下基础。</p>
+                        <p>继续练习和探索更多 Python 功能，你会发现编程的乐趣和力量！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 章节切换功能
+        document.querySelectorAll('.chapter-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有活跃状态
+                document.querySelectorAll('.chapter-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                document.querySelectorAll('.chapter').forEach(c => {
+                    c.classList.remove('active');
+                });
+                
+                // 添加当前活跃状态
+                this.classList.add('active');
+                const chapterId = this.getAttribute('data-chapter');
+                document.getElementById(`chapter${chapterId}`).classList.add('active');
+            });
+        });
+        
+        // 添加一些交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为语法示例添加悬停效果
+            document.querySelectorAll('.syntax-example').forEach(example => {
+                example.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                
+                example.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
